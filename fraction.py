@@ -19,14 +19,42 @@ class Fraction(object):
     """
 
     def __init__(self, nom, denom):
-        self.nom = nom
-        self.denom = denom
+        self.nom = nom/gcd(nom, denom)
+        self.denom = denom/gcd(nom, denom)
+
+        if self.denom == 0:
+            raise ValueError('denominator cannot be 0.')
+
+        if self.denom < 0:
+            self.nom = - self.nom
+            self.denom = - self.denom
+
+        self.nom = int(self.nom)
+        self.denom = int(self.denom)
 
     def __str__(self):
-        return f"{self.nom}/{self.denom}"
+        return ('{0.nom}/{0.denom}'.format(self))
+
+    def __mul__(self, other):
+        return Fraction(self.nom * other.nom, self.denom * other.denom)
+
+    def __truediv__(self, other):
+        return Fraction(self.nom * other.denom, self.denom * other.nom)
+
+    def __add__(self, other):
+        return Fraction(self.nom*other.denom + other.nom*self.denom, self.denom *other.denom)
+
+    def __sub__(self, other):
+        return Fraction(self.nom * other.denom - other.nom * self.denom, self.denom * other.denom)
+
+    def __pow__(self, power, modulo=None):
+        return Fraction(self.nom**power, self.denom**power)
 
     def __repr__(self):
         return f"Fraction({self.nom}, {self.denom})"
 
     def __eq__(self, other):
         return self.nom == other.nom and self.denom == other.denom
+
+    def value(self):
+        return  self.nom/self.denom
