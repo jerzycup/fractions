@@ -55,8 +55,10 @@ class Fraction(object):
         return self.nom/self.denom
 
     def simplify(self):
-        self._nom = int(self._nom/gcd(self._nom, self._denom))
-        self._denom = int(self._denom/gcd(self._nom, self._denom))
+        nom = self._nom
+        denom = self._denom
+        self._denom = int(denom / gcd(nom, denom))
+        self._nom = int(nom/gcd(nom, denom))
 
     @property
     def denom(self):
