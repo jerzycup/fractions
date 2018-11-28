@@ -19,18 +19,13 @@ class Fraction(object):
     """
 
     def __init__(self, nom, denom):
-        self.nom = nom/gcd(nom, denom)
-        self.denom = denom/gcd(nom, denom)
-
-        if self.denom == 0:
+        if denom == 0:
             raise ValueError('denominator cannot be 0.')
 
-        if self.denom < 0:
-            self.nom = - self.nom
-            self.denom = - self.denom
+        self._nom = int(nom)
+        self._denom = int(denom)
 
-        self.nom = int(self.nom)
-        self.denom = int(self.denom)
+        self.simplify()
 
     def __str__(self):
         return ('{0.nom}/{0.denom}'.format(self))
@@ -57,4 +52,29 @@ class Fraction(object):
         return self.nom == other.nom and self.denom == other.denom
 
     def value(self):
-        return  self.nom/self.denom
+        return self.nom/self.denom
+
+    def simplify(self):
+        self._nom = int(self._nom/gcd(self._nom, self._denom))
+        self._denom = int(self._denom/gcd(self._nom, self._denom))
+
+    @property
+    def denom(self):
+        return self._denom
+
+    @denom.setter
+    def denom(self, value):
+        if value == 0:
+            raise ValueError('denominator cannot be 0.')
+
+        self._denom = int(value)
+        self.simplify()
+
+    @property
+    def nom(self):
+        return self._nom
+
+    @nom.setter
+    def nom(self, value):
+        self._nom = int(value)
+        self.simplify()
